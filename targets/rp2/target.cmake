@@ -21,6 +21,12 @@ elseif(BOARD STREQUAL "pico2")
   set(PICO_BOARD pico2)
 elseif(BOARD STREQUAL "pico2-w")
   set(PICO_BOARD pico2_w)
+elseif(BOARD STREQUAL "kb2040")
+  # Use default PICO board configuration for RP2040
+  set(PICO_BOARD pico)
+  # KB2040 defaults to 8MB external flash and longer XOSC startup
+  add_compile_definitions(PICO_FLASH_SIZE_BYTES=8388608)
+  add_compile_definitions(PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64)
 else()
   message(FATAL_ERROR "KalumaJS does not support this board yet.")
 endif()

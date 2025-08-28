@@ -1,0 +1,40 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    cmake \
+    ninja-build \
+    git \
+    python3 \
+    python3-pip \
+    curl \
+    ca-certificates \
+    pkg-config \
+    nodejs \
+    npm \
+    gcc-arm-none-eabi \
+    libnewlib-arm-none-eabi \
+    libstdc++-arm-none-eabi-newlib \
+  && rm -rf /var/lib/apt/lists/*
+
+# Ensure `python` exists for build scripts invoking `python`
+RUN ln -sf /usr/bin/python3 /usr/bin/python
+
+WORKDIR /work
+COPY . /work
+
+# Initialize submodules and install JS build deps
+RUN git submodule update --init --recursive \
+ && (npm ci || npm install)
+
+# Default build args
+ARG BOARD=kb2040
+ARG TARGET=rp2
+
+# Build Kaluma for the specified board
+# Clean any pre-existing build artifacts copied from host
+RUN node build.js --clean || rm -rf build src/gen || true
+RUN node build.js --target ${TARGET} --board ${BOARD}
+
+CMD ["/bin/bash"]
