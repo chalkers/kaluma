@@ -11,14 +11,18 @@ This file outlines how to extend and maintain RP2 (RP2040) board support for Kal
 ## Build & Flash
 
 ### Docker (recommended)
-- Image: `kaluma-kb2040`
-- Script: `tools/docker/build_kb2040.sh`
+- Images:
+  - `kaluma-kb2040`
+  - `kaluma-rp2040-touch-lcd-1-28`
+- Scripts:
+  - `tools/docker/build_kb2040.sh`
+  - `tools/docker/build_rp2040_touch_lcd_1_28.sh`
 - Outputs UF2 to: `./build`
 - Flash: Hold BOOTSEL, plug board in, copy `*.uf2` to `RPI-RP2` mass storage
 
 ### Manual (local toolchain)
 - `npm install`
-- `node build.js --target rp2 --board kb2040`
+- `node build.js --target rp2 --board <board>` (e.g., `kb2040` or `rp2040-touch-lcd-1-28`)
 - Flash via BOOTSEL by copying UF2 from `build/`
 
 ## Flash Partitioning

@@ -85,6 +85,9 @@ set(VENDOR_PREFIX "")
 if(BOARD STREQUAL "kb2040")
   # Adafruit KB2040 artifacts: kaluma-<target>-adafruit-kb2040-<ver>.*
   set(VENDOR_PREFIX "adafruit-")
+elseif(BOARD STREQUAL "rp2040-touch-lcd-1-28")
+  # Waveshare RP2040-Touch-LCD-1.28 artifacts: kaluma-<target>-waveshare-rp2040-touch-lcd-1-28-<ver>.*
+  set(VENDOR_PREFIX "waveshare-")
 endif()
 
 set(OUTPUT_TARGET kaluma-${TARGET}-${VENDOR_PREFIX}${BOARD}-${VER})
