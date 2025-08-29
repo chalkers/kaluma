@@ -61,8 +61,9 @@
 #define ADC_RESOLUTION_BIT 12
 #define PWM_CLK_REF 1250
 #define I2C_MAX_CLOCK 1000000
+// Consistent autorun hold pin across RP2040 boards
+#define SCR_LOAD_GPIO 22  // GPIO 22
 
 void board_init();
 
 #endif /* __RP2_RP2040_PIZERO_H */
-
