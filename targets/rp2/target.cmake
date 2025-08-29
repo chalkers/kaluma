@@ -21,6 +21,11 @@ elseif(BOARD STREQUAL "pico2")
   set(PICO_BOARD pico2)
 elseif(BOARD STREQUAL "pico2-w")
   set(PICO_BOARD pico2_w)
+elseif(BOARD STREQUAL "rp2040-pizero")
+  # Waveshare RP2040-PiZero uses RP2040 + 16MB external flash
+  set(PICO_BOARD pico)
+  add_compile_definitions(PICO_FLASH_SIZE_BYTES=16777216)
+  add_compile_definitions(PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64)
 else()
   message(FATAL_ERROR "KalumaJS does not support this board yet.")
 endif()
@@ -68,7 +73,15 @@ project(kaluma-project C CXX ASM)
 
 # initialize the Pico SDK
 pico_sdk_init()
-set(OUTPUT_TARGET kaluma-${TARGET}-${BOARD}-${VER})
+
+# Optional vendor prefix for artifact naming; defaults to empty.
+set(VENDOR_PREFIX "")
+if(BOARD STREQUAL "rp2040-pizero")
+  # Waveshare PiZero artifacts: kaluma-<target>-waveshare-rp2040-pizero-<ver>.*
+  set(VENDOR_PREFIX "waveshare-")
+endif()
+
+set(OUTPUT_TARGET kaluma-${TARGET}-${VENDOR_PREFIX}${BOARD}-${VER})
 set(TARGET_SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/src)
 set(TARGET_INC_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
 set(BOARD_DIR ${CMAKE_CURRENT_LIST_DIR}/boards/${BOARD})
