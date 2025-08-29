@@ -33,7 +33,7 @@ struct __spi_status_s {
 static bool __check_spi_pins(uint8_t bus, km_spi_pins_t pins) {
   if (bus == 0) {
     if ((pins.miso >= 0) && (pins.miso != 0) && (pins.miso != 4) &&
-        (pins.miso != 16)) {
+        (pins.miso != 16) && (pins.miso != 20)) {
       return false;
     }
     if ((pins.mosi >= 0) && (pins.mosi != 3) && (pins.mosi != 7) &&
