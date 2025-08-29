@@ -27,11 +27,6 @@ elseif(BOARD STREQUAL "kb2040")
   # KB2040 defaults to 8MB external flash and longer XOSC startup
   add_compile_definitions(PICO_FLASH_SIZE_BYTES=8388608)
   add_compile_definitions(PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64)
-elseif(BOARD STREQUAL "rp2040-touch-lcd-1-28")
-  # Waveshare RP2040-Touch-LCD-1.28 uses RP2040 + 16MB external flash
-  set(PICO_BOARD pico)
-  add_compile_definitions(PICO_FLASH_SIZE_BYTES=16777216)
-  add_compile_definitions(PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64)
 else()
   message(FATAL_ERROR "KalumaJS does not support this board yet.")
 endif()
