@@ -23,6 +23,12 @@ elseif(BOARD STREQUAL "pico2")
   set(PICO_BOARD pico2)
 elseif(BOARD STREQUAL "pico2-w")
   set(PICO_BOARD pico2_w)
+elseif(BOARD STREQUAL "kb2040")
+  # Use default PICO board configuration for RP2040
+  set(PICO_BOARD pico)
+  # KB2040 defaults to 8MB external flash and longer XOSC startup
+  add_compile_definitions(PICO_FLASH_SIZE_BYTES=8388608)
+  add_compile_definitions(PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64)
 else()
   message(FATAL_ERROR "KalumaJS does not support this board yet.")
 endif()
@@ -70,7 +76,15 @@ project(kaluma-project C CXX ASM)
 
 # initialize the Pico SDK
 pico_sdk_init()
-set(OUTPUT_TARGET kaluma-${TARGET}-${BOARD}-${VER})
+
+# Optional vendor prefix for artifact naming; defaults to empty.
+set(VENDOR_PREFIX "")
+if(BOARD STREQUAL "kb2040")
+  # Adafruit KB2040 artifacts: kaluma-<target>-adafruit-kb2040-<ver>.*
+  set(VENDOR_PREFIX "adafruit-")
+endif()
+
+set(OUTPUT_TARGET kaluma-${TARGET}-${VENDOR_PREFIX}${BOARD}-${VER})
 set(TARGET_SRC_DIR ${CMAKE_CURRENT_LIST_DIR}/src)
 set(TARGET_INC_DIR ${CMAKE_CURRENT_LIST_DIR}/include)
 set(BOARD_DIR ${CMAKE_CURRENT_LIST_DIR}/boards/${BOARD})
