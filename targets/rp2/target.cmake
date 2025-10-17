@@ -28,6 +28,17 @@ elseif(BOARD STREQUAL "rp2040-pizero")
   set(PICO_BOARD pico)
   add_compile_definitions(PICO_FLASH_SIZE_BYTES=16777216)
   add_compile_definitions(PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64)
+elseif(BOARD STREQUAL "kb2040")
+  # Use default PICO board configuration for RP2040
+  set(PICO_BOARD pico)
+  # KB2040 defaults to 8MB external flash and longer XOSC startup
+  add_compile_definitions(PICO_FLASH_SIZE_BYTES=8388608)
+  add_compile_definitions(PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64)
+elseif(BOARD STREQUAL "rp2040-touch-lcd-1-28")
+  # Waveshare RP2040-Touch-LCD-1.28 uses RP2040 + 16MB external flash
+  set(PICO_BOARD pico)
+  add_compile_definitions(PICO_FLASH_SIZE_BYTES=16777216)
+  add_compile_definitions(PICO_XOSC_STARTUP_DELAY_MULTIPLIER=64)
 else()
   message(FATAL_ERROR "KalumaJS does not support this board yet.")
 endif()
@@ -80,6 +91,12 @@ pico_sdk_init()
 set(VENDOR_PREFIX "")
 if(BOARD STREQUAL "rp2040-pizero")
   # Waveshare PiZero artifacts: kaluma-<target>-waveshare-rp2040-pizero-<ver>.*
+  set(VENDOR_PREFIX "waveshare-")
+elseif(BOARD STREQUAL "kb2040")
+  # Adafruit KB2040 artifacts: kaluma-<target>-adafruit-kb2040-<ver>.*
+  set(VENDOR_PREFIX "adafruit-")
+elseif(BOARD STREQUAL "rp2040-touch-lcd-1-28")
+  # Waveshare RP2040-Touch-LCD-1.28 artifacts: kaluma-<target>-waveshare-rp2040-touch-lcd-1-28-<ver>.*
   set(VENDOR_PREFIX "waveshare-")
 endif()
 
